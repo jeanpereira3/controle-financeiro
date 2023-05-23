@@ -1,12 +1,16 @@
 package br.com.jean.controlefinanceiro.controller;
 
 import br.com.jean.controlefinanceiro.model.dto.CadastroReceitaDto;
+import br.com.jean.controlefinanceiro.model.dto.ListagemReceitaDto;
 import br.com.jean.controlefinanceiro.model.dto.ReceitaDetalhadaDto;
+import br.com.jean.controlefinanceiro.model.entity.Receita;
 import br.com.jean.controlefinanceiro.repository.ReceitaRepository;
 import br.com.jean.controlefinanceiro.service.receitas.CadastrarReceita;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -32,5 +36,11 @@ public class ReceitaController {
 
         URI uri = uriComponentsBuilder.path("/receitas/{id}").buildAndExpand(receitaDetalhadaDto.id()).toUri();
         return ResponseEntity.created(uri).body(receitaDetalhadaDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ListagemReceitaDto>> listar(Pageable pageable){
+        Page<ListagemReceitaDto> page = receitaRepository.findAll(pageable).map(ListagemReceitaDto::new);
+        return ResponseEntity.ok().body(page);
     }
 }
