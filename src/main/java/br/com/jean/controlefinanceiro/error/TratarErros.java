@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class TratarErros {
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity erro(EntityNotFoundException e){
-        return ResponseEntity.ok().body(e);
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity elementoNaoEncontrado(NoSuchElementException e){
+
+        return ResponseEntity.ok().body(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

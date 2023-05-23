@@ -43,4 +43,11 @@ public class ReceitaController {
         Page<ListagemReceitaDto> page = receitaRepository.findAll(pageable).map(ListagemReceitaDto::new);
         return ResponseEntity.ok().body(page);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity listarPorId(@PathVariable Long id){
+        Receita receita = receitaRepository.findById(id).get();
+        return ResponseEntity.ok().body(new ReceitaDetalhadaDto(receita));
+    }
+
 }
