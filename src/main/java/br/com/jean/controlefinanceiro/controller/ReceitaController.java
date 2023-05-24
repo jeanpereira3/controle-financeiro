@@ -1,11 +1,12 @@
 package br.com.jean.controlefinanceiro.controller;
 
+import br.com.jean.controlefinanceiro.model.dto.AtualizacaoReceitaDto;
 import br.com.jean.controlefinanceiro.model.dto.CadastroReceitaDto;
 import br.com.jean.controlefinanceiro.model.dto.ListagemReceitaDto;
 import br.com.jean.controlefinanceiro.model.dto.ReceitaDetalhadaDto;
 import br.com.jean.controlefinanceiro.model.entity.Receita;
 import br.com.jean.controlefinanceiro.repository.ReceitaRepository;
-import br.com.jean.controlefinanceiro.service.receitas.CadastrarReceita;
+import br.com.jean.controlefinanceiro.service.receitas.ReceitaService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ReceitaController {
     @Autowired
     private ReceitaRepository receitaRepository;
     @Autowired
-    private CadastrarReceita cadastrarReceita;
+    private ReceitaService receitaService;
 
     @PostMapping
     @Transactional
@@ -32,10 +33,20 @@ public class ReceitaController {
             @RequestBody @Valid CadastroReceitaDto dto,
             UriComponentsBuilder uriComponentsBuilder
     ){
-        ReceitaDetalhadaDto receitaDetalhadaDto = cadastrarReceita.cadastrar(dto);
+        ReceitaDetalhadaDto receitaDetalhadaDto = receitaService.cadastrar(dto);
 
         URI uri = uriComponentsBuilder.path("/receitas/{id}").buildAndExpand(receitaDetalhadaDto.id()).toUri();
         return ResponseEntity.created(uri).body(receitaDetalhadaDto);
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity atualizar(
+            @PathVariable Long id,
+            @RequestBody AtualizacaoReceitaDto dto
+            ){
+        ReceitaDetalhadaDto receitaDetalhadaDto = receitaService.atualizar(id, dto);
+        return ResponseEntity.ok().body(receitaDetalhadaDto);
     }
 
     @GetMapping

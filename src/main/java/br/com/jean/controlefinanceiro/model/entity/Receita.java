@@ -1,5 +1,6 @@
 package br.com.jean.controlefinanceiro.model.entity;
 
+import br.com.jean.controlefinanceiro.model.dto.AtualizacaoReceitaDto;
 import br.com.jean.controlefinanceiro.model.dto.CadastroReceitaDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,5 +28,18 @@ public class Receita {
         this.descricao = dados.descricao();
         this.valor = dados.valor();
         this.data = dados.data();
+    }
+
+    public Receita atualizar(AtualizacaoReceitaDto dto) {
+        if (dto.descricao() != null){
+            this.descricao = dto.descricao();
+        }
+        if (dto.valor() != null){
+            this.valor = dto.valor();
+        }
+        if (dto.data() != null){
+            this.data = dto.data();
+        }
+        return this;
     }
 }
