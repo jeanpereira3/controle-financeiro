@@ -17,7 +17,7 @@ public class TratarErros {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity elementoNaoEncontrado(NoSuchElementException e){
 
-        return ResponseEntity.ok().body(e.getMessage());
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
