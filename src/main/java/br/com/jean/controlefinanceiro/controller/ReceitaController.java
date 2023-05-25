@@ -61,4 +61,11 @@ public class ReceitaController {
         return ResponseEntity.ok().body(new ReceitaDetalhadaDto(receita));
     }
 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity deletar(@PathVariable Long id){
+        receitaRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
