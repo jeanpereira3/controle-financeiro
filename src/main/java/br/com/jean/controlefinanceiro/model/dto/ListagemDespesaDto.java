@@ -1,18 +1,15 @@
 package br.com.jean.controlefinanceiro.model.dto;
 
 import br.com.jean.controlefinanceiro.model.entity.Despesa;
-import br.com.jean.controlefinanceiro.model.entity.Receita;
 
 import java.time.LocalDate;
 
-public record ListagemReceitaDto(
+public record ListagemDespesaDto(
         String descricao,
         Double valor,
         LocalDate data
 ) {
-    public ListagemReceitaDto(Receita receita){
-        this(receita.getDescricao(), receita.getValor(), receita.getData());
+    public ListagemDespesaDto(Despesa despesa){
+        this(despesa.getDescricao(), despesa.getValor(), despesa.getData());
     }
-
-
 }
