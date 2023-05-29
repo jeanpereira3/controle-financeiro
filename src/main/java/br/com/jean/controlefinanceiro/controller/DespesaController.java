@@ -3,6 +3,7 @@ package br.com.jean.controlefinanceiro.controller;
 import br.com.jean.controlefinanceiro.model.dto.CadastroDespesaDto;
 import br.com.jean.controlefinanceiro.model.dto.DespesaDetalhadaDto;
 import br.com.jean.controlefinanceiro.model.dto.ListagemDespesaDto;
+import br.com.jean.controlefinanceiro.model.entity.Despesa;
 import br.com.jean.controlefinanceiro.repository.DespesaRepository;
 import br.com.jean.controlefinanceiro.service.despesas.DespesaService;
 import jakarta.transaction.Transactional;
@@ -40,5 +41,11 @@ public class DespesaController {
     public ResponseEntity<Page<ListagemDespesaDto>> listar(Pageable pageable){
         Page<ListagemDespesaDto> page = despesaRepository.findAll(pageable).map(ListagemDespesaDto::new);
         return ResponseEntity.ok().body(page);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detelhar(@PathVariable Long id){
+        Despesa despeesa = despesaRepository.findById(id).get();
+        return ResponseEntity.ok().body(new DespesaDetalhadaDto(despeesa));
     }
 }
