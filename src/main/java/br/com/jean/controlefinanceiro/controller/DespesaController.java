@@ -56,4 +56,11 @@ public class DespesaController {
         DespesaDetalhadaDto despesaDetalhadaDto = despesaService.atualizar(id, dto);
         return ResponseEntity.ok().body(despesaDetalhadaDto);
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity deletar(@PathVariable Long id){
+        despesaRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
