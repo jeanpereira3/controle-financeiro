@@ -1,5 +1,6 @@
 package br.com.jean.controlefinanceiro.controller;
 
+import br.com.jean.controlefinanceiro.model.dto.AtualizacaoDespesaDto;
 import br.com.jean.controlefinanceiro.model.dto.CadastroDespesaDto;
 import br.com.jean.controlefinanceiro.model.dto.DespesaDetalhadaDto;
 import br.com.jean.controlefinanceiro.model.dto.ListagemDespesaDto;
@@ -47,5 +48,12 @@ public class DespesaController {
     public ResponseEntity detelhar(@PathVariable Long id){
         Despesa despeesa = despesaRepository.findById(id).get();
         return ResponseEntity.ok().body(new DespesaDetalhadaDto(despeesa));
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody AtualizacaoDespesaDto dto){
+        DespesaDetalhadaDto despesaDetalhadaDto = despesaService.atualizar(id, dto);
+        return ResponseEntity.ok().body(despesaDetalhadaDto);
     }
 }

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ReceitaRepository extends JpaRepository<Receita, Long> {
 
-    Receita findByDescricao(String descricao);
+    List<Receita> findByDescricao(String descricao);
 }

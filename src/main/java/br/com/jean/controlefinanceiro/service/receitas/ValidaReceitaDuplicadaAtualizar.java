@@ -8,6 +8,8 @@ import br.com.jean.controlefinanceiro.utils.CompararData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ValidaReceitaDuplicadaAtualizar implements ReceitaValidacaoAtualizar {
     @Autowired
@@ -17,20 +19,23 @@ public class ValidaReceitaDuplicadaAtualizar implements ReceitaValidacaoAtualiza
     @Override
     public void validar(AtualizacaoReceitaDto dto) {
 
-        Receita receita = receitaRepository.findByDescricao(dto.descricao());
+        List<Receita> receitas = receitaRepository.findByDescricao(dto.descricao());
 
-        if (receita != null){
-            if (dto.data() == null){
-                throw new ValidacaoException("Ja existe receita com essa descricao para esse mes");
+        receitas.forEach(receita -> {
+            if (receita != null){
+                if (dto.data() == null){
+                    throw new ValidacaoException("Ja existe receita com essa descricao para esse mes");
+                }
+
+                Boolean data = compararData.compararAnoMes(receita.getData(), dto.data());
+
+                if (data){
+                    throw new ValidacaoException("Ja existe receita com essa descricao para esse mes");
+                }
+
             }
+        });
 
-            Boolean data = compararData.compararAnoMes(receita.getData(), dto.data());
-
-            if (data){
-                throw new ValidacaoException("Ja existe receita com essa descricao para esse mes");
-            }
-
-        }
     }
 
 }

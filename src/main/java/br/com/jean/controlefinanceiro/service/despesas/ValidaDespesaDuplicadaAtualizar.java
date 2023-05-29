@@ -1,6 +1,7 @@
 package br.com.jean.controlefinanceiro.service.despesas;
 
 import br.com.jean.controlefinanceiro.exceptions.ValidacaoException;
+import br.com.jean.controlefinanceiro.model.dto.AtualizacaoDespesaDto;
 import br.com.jean.controlefinanceiro.model.dto.CadastroDespesaDto;
 import br.com.jean.controlefinanceiro.model.entity.Despesa;
 import br.com.jean.controlefinanceiro.repository.DespesaRepository;
@@ -11,13 +12,13 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ValidaDespesaDuplicadaCadastro implements DespesaValidacaoCadastro{
+public class ValidaDespesaDuplicadaAtualizar implements DespesaValidacaoAtualizar{
     @Autowired
     private DespesaRepository despesaRepository;
     @Autowired
     private CompararData compararData;
     @Override
-    public void validar(CadastroDespesaDto dto) {
+    public void validar(AtualizacaoDespesaDto dto) {
 
         List<Despesa> despesas = despesaRepository.findByDescricao(dto.descricao());
         despesas.forEach(despesa -> {

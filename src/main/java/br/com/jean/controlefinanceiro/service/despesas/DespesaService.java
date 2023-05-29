@@ -1,5 +1,6 @@
 package br.com.jean.controlefinanceiro.service.despesas;
 
+import br.com.jean.controlefinanceiro.model.dto.AtualizacaoDespesaDto;
 import br.com.jean.controlefinanceiro.model.dto.CadastroDespesaDto;
 import br.com.jean.controlefinanceiro.model.dto.DespesaDetalhadaDto;
 import br.com.jean.controlefinanceiro.model.entity.Despesa;
@@ -15,6 +16,8 @@ public class DespesaService {
     private DespesaRepository despesaRepository;
     @Autowired
     private List<DespesaValidacaoCadastro> validacaoCadastros;
+    @Autowired
+    private List<DespesaValidacaoAtualizar> validacaoAtualizar;
     public DespesaDetalhadaDto cadastrar(CadastroDespesaDto dto) {
 
         validacaoCadastros.forEach(v -> v.validar(dto));
@@ -22,5 +25,12 @@ public class DespesaService {
         Despesa despesa = new Despesa(dto);
         despesaRepository.save(despesa);
         return new DespesaDetalhadaDto(despesa);
+    }
+
+    public DespesaDetalhadaDto atualizar(Long id, AtualizacaoDespesaDto dto) {
+        validacaoAtualizar.forEach(v -> v.validar(dto));
+        Despesa despesa = despesaRepository.getReferenceById(id);
+        Despesa despesaAtualizada = despesa.atualizar(dto);
+        return new DespesaDetalhadaDto(despesaAtualizada);
     }
 }
