@@ -55,6 +55,18 @@ public class DespesaController {
         return ResponseEntity.ok().body(new DespesaDetalhadaDto(despeesa));
     }
 
+    @GetMapping("/{ano}/{mes}")
+    public ResponseEntity listarPorAnoMes(
+            Pageable pageable,
+            @PathVariable Integer ano,
+            @PathVariable Integer mes
+    ){
+        Page<ListagemDespesaDto> page = despesaRepository
+                .findByDataYearAndDataMonth(pageable, ano, mes)
+                .map(ListagemDespesaDto::new);
+        return ResponseEntity.ok().body(page);
+    }
+
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity atualizar(@PathVariable Long id, @RequestBody AtualizacaoDespesaDto dto){

@@ -73,7 +73,7 @@ public class ReceitaController {
     }
 
     @GetMapping("/{ano}/{mes}")
-    public ResponseEntity listarPorId(
+    public ResponseEntity listarPorAnoMes(
             Pageable pageable,
             @PathVariable Integer ano,
             @PathVariable Integer mes
