@@ -1,5 +1,6 @@
 package br.com.jean.controlefinanceiro.controller;
 
+import br.com.jean.controlefinanceiro.exceptions.ValidacaoException;
 import br.com.jean.controlefinanceiro.model.dto.AtualizacaoReceitaDto;
 import br.com.jean.controlefinanceiro.model.dto.CadastroReceitaDto;
 import br.com.jean.controlefinanceiro.model.dto.ListagemReceitaDto;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.YearMonth;
 import java.util.ArrayList;
 
 @RestController
@@ -59,7 +63,6 @@ public class ReceitaController {
         } else {
             page = receitaRepository.findByDescricaoContaining(pageable, descricao).map(ListagemReceitaDto::new);
         }
-
         return ResponseEntity.ok().body(page);
     }
 
@@ -67,6 +70,19 @@ public class ReceitaController {
     public ResponseEntity listarPorId(@PathVariable Long id){
         Receita receita = receitaRepository.findById(id).get();
         return ResponseEntity.ok().body(new ReceitaDetalhadaDto(receita));
+    }
+
+    @GetMapping("/{ano}/{mes}")
+    public ResponseEntity listarPorId(
+            Pageable pageable,
+            @PathVariable Integer ano,
+            @PathVariable Integer mes
+    ){
+        Page<ListagemReceitaDto> page = receitaRepository
+                .findByDataYearAndDataMonth(pageable, ano, mes)
+                .map(ListagemReceitaDto::new);
+
+        return ResponseEntity.ok().body(page);
     }
 
     @DeleteMapping("/{id}")
