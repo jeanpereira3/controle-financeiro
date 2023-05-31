@@ -1,5 +1,6 @@
 package br.com.jean.controlefinanceiro.model.dto;
 
+import br.com.jean.controlefinanceiro.model.entity.Categoria;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,6 +12,7 @@ public record CadastroDespesaDto(
         @NotNull
         Double valor,
         @NotNull
-        LocalDate data
+        LocalDate data,
+        Categoria categoria
 ) {
 }
