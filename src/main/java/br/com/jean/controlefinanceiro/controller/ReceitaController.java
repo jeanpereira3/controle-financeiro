@@ -11,12 +11,14 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/receitas")
@@ -50,8 +52,14 @@ public class ReceitaController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ListagemReceitaDto>> listar(Pageable pageable){
-        Page<ListagemReceitaDto> page = receitaRepository.findAll(pageable).map(ListagemReceitaDto::new);
+    public ResponseEntity<Page<ListagemReceitaDto>> listar(Pageable pageable, String descricao){
+        Page<ListagemReceitaDto> page;
+        if (descricao == null){
+            page = receitaRepository.findAll(pageable).map(ListagemReceitaDto::new);
+        } else {
+            page = receitaRepository.findByDescricaoContaining(pageable, descricao).map(ListagemReceitaDto::new);
+        }
+
         return ResponseEntity.ok().body(page);
     }
 
