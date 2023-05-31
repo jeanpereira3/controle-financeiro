@@ -39,8 +39,13 @@ public class DespesaController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ListagemDespesaDto>> listar(Pageable pageable){
-        Page<ListagemDespesaDto> page = despesaRepository.findAll(pageable).map(ListagemDespesaDto::new);
+    public ResponseEntity<Page<ListagemDespesaDto>> listar(Pageable pageable, String descricao){
+        Page<ListagemDespesaDto> page;
+        if (descricao == null){
+            page = despesaRepository.findAll(pageable).map(ListagemDespesaDto::new);
+        } else {
+            page = despesaRepository.findByDescricaoContaining(pageable, descricao).map(ListagemDespesaDto::new);
+        }
         return ResponseEntity.ok().body(page);
     }
 
