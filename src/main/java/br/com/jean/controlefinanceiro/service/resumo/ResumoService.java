@@ -58,7 +58,7 @@ public class ResumoService {
         resumos.clear();
 
         resultados.forEach(r ->{
-            ResumoPorCategoriaDTO resumo = new ResumoPorCategoriaDTO(r[0].toString(), r[1].toString());
+            ResumoPorCategoriaDTO resumo = new ResumoPorCategoriaDTO(r[0].toString(), (Double) r[1]);
             resumos.add(resumo);
         });
     }
